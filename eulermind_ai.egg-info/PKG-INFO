@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: eulermind-ai
+Version: 0.1.0
+Requires-Python: >=3.11
+Requires-Dist: langchain
+Requires-Dist: langchain-community
+Requires-Dist: langgraph
+Requires-Dist: psutil
+Requires-Dist: python-dotenv
+Requires-Dist: transformers
+Requires-Dist: torch

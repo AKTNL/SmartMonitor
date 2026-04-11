@@ -1,0 +1,2 @@
+[console_scripts]
+eulermind-ai = project.Agent:main

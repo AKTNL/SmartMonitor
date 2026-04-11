@@ -1,0 +1,7 @@
+langchain
+langchain-community
+langgraph
+psutil
+python-dotenv
+transformers
+torch

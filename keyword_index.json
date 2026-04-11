@@ -1,0 +1,710 @@
+[
+  {
+    "category": "cpu",
+    "word": "cpu"
+  },
+  {
+    "category": "cpu",
+    "word": "处理器"
+  },
+  {
+    "category": "cpu",
+    "word": "负载"
+  },
+  {
+    "category": "cpu",
+    "word": "load"
+  },
+  {
+    "category": "cpu",
+    "word": "频率"
+  },
+  {
+    "category": "cpu",
+    "word": "核心"
+  },
+  {
+    "category": "cpu",
+    "word": "core"
+  },
+  {
+    "category": "cpu",
+    "word": "主频"
+  },
+  {
+    "category": "cpu",
+    "word": "计算能力"
+  },
+  {
+    "category": "cpu",
+    "word": "上下文切换"
+  },
+  {
+    "category": "cpu",
+    "word": "使用率"
+  },
+  {
+    "category": "cpu",
+    "word": "线程"
+  },
+  {
+    "category": "cpu",
+    "word": "物理核"
+  },
+  {
+    "category": "cpu",
+    "word": "逻辑核"
+  },
+  {
+    "category": "cpu",
+    "word": "MHz"
+  },
+  {
+    "category": "memory",
+    "word": "内存"
+  },
+  {
+    "category": "memory",
+    "word": "memory"
+  },
+  {
+    "category": "memory",
+    "word": "ram"
+  },
+  {
+    "category": "memory",
+    "word": "swap"
+  },
+  {
+    "category": "memory",
+    "word": "交换分区"
+  },
+  {
+    "category": "memory",
+    "word": "可用内存"
+  },
+  {
+    "category": "memory",
+    "word": "已用内存"
+  },
+  {
+    "category": "memory",
+    "word": "内存使用率"
+  },
+  {
+    "category": "memory",
+    "word": "缓存"
+  },
+  {
+    "category": "memory",
+    "word": "缓冲区"
+  },
+  {
+    "category": "memory",
+    "word": "共享内存"
+  },
+  {
+    "category": "memory",
+    "word": "活跃内存"
+  },
+  {
+    "category": "memory",
+    "word": "不活跃内存"
+  },
+  {
+    "category": "memory",
+    "word": "空闲内存剩余量"
+  },
+  {
+    "category": "disk",
+    "word": "disk"
+  },
+  {
+    "category": "disk",
+    "word": "磁盘"
+  },
+  {
+    "category": "disk",
+    "word": "挂载"
+  },
+  {
+    "category": "disk",
+    "word": "系统文件"
+  },
+  {
+    "category": "disk",
+    "word": "设备路径"
+  },
+  {
+    "category": "disk",
+    "word": "IO"
+  },
+  {
+    "category": "disk",
+    "word": "读写"
+  },
+  {
+    "category": "disk",
+    "word": "io"
+  },
+  {
+    "category": "disk",
+    "word": "分区"
+  },
+  {
+    "category": "disk",
+    "word": "ext4"
+  },
+  {
+    "category": "disk",
+    "word": "xfs"
+  },
+  {
+    "category": "disk",
+    "word": "ntfs"
+  },
+  {
+    "category": "disk",
+    "word": "总容量"
+  },
+  {
+    "category": "disk",
+    "word": "已用容量"
+  },
+  {
+    "category": "disk",
+    "word": "空闲容量"
+  },
+  {
+    "category": "disk",
+    "word": "使用率"
+  },
+  {
+    "category": "disk",
+    "word": "写入字节"
+  },
+  {
+    "category": "disk",
+    "word": "读取字节"
+  },
+  {
+    "category": "process",
+    "word": "进程"
+  },
+  {
+    "category": "process",
+    "word": "process"
+  },
+  {
+    "category": "process",
+    "word": "pid"
+  },
+  {
+    "category": "process",
+    "word": "kill"
+  },
+  {
+    "category": "process",
+    "word": "杀"
+  },
+  {
+    "category": "process",
+    "word": "查找"
+  },
+  {
+    "category": "process",
+    "word": "程序"
+  },
+  {
+    "category": "process",
+    "word": "高占用"
+  },
+  {
+    "category": "process",
+    "word": "资源占用"
+  },
+  {
+    "category": "process",
+    "word": "运行状态"
+  },
+  {
+    "category": "process",
+    "word": "systemd"
+  },
+  {
+    "category": "process",
+    "word": "chrome"
+  },
+  {
+    "category": "process",
+    "word": "python"
+  },
+  {
+    "category": "process",
+    "word": "进程总数"
+  },
+  {
+    "category": "file",
+    "word": "file"
+  },
+  {
+    "category": "file",
+    "word": "日志"
+  },
+  {
+    "category": "file",
+    "word": "路径"
+  },
+  {
+    "category": "file",
+    "word": "log"
+  },
+  {
+    "category": "file",
+    "word": "read"
+  },
+  {
+    "category": "file",
+    "word": "获取"
+  },
+  {
+    "category": "file",
+    "word": "显示"
+  },
+  {
+    "category": "file",
+    "word": "目录"
+  },
+  {
+    "category": "file",
+    "word": "大文件"
+  },
+  {
+    "category": "file",
+    "word": "根目录"
+  },
+  {
+    "category": "file",
+    "word": "总大小"
+  },
+  {
+    "category": "file",
+    "word": "文件数"
+  },
+  {
+    "category": "file",
+    "word": "子目录"
+  },
+  {
+    "category": "file",
+    "word": "概览"
+  },
+  {
+    "category": "file",
+    "word": "大文件字节数"
+  },
+  {
+    "category": "network",
+    "word": "网络"
+  },
+  {
+    "category": "network",
+    "word": "network"
+  },
+  {
+    "category": "network",
+    "word": "ip"
+  },
+  {
+    "category": "network",
+    "word": "ping"
+  },
+  {
+    "category": "network",
+    "word": "流量"
+  },
+  {
+    "category": "network",
+    "word": "网速"
+  },
+  {
+    "category": "network",
+    "word": "端口"
+  },
+  {
+    "category": "network",
+    "word": "连接"
+  },
+  {
+    "category": "network",
+    "word": "上传"
+  },
+  {
+    "category": "network",
+    "word": "下载"
+  },
+  {
+    "category": "network",
+    "word": "实时网速"
+  },
+  {
+    "category": "network",
+    "word": "发送"
+  },
+  {
+    "category": "network",
+    "word": "接收"
+  },
+  {
+    "category": "network",
+    "word": "包数"
+  },
+  {
+    "category": "network",
+    "word": "错误"
+  },
+  {
+    "category": "network",
+    "word": "丢弃"
+  },
+  {
+    "category": "network",
+    "word": "接口"
+  },
+  {
+    "category": "network",
+    "word": "IPv4"
+  },
+  {
+    "category": "network",
+    "word": "IPv6"
+  },
+  {
+    "category": "network",
+    "word": "子网掩码"
+  },
+  {
+    "category": "network",
+    "word": "广播"
+  },
+  {
+    "category": "network",
+    "word": "MTU"
+  },
+  {
+    "category": "network",
+    "word": "全双工"
+  },
+  {
+    "category": "network",
+    "word": "活跃连接"
+  },
+  {
+    "category": "system_monitor",
+    "word": "系统"
+  },
+  {
+    "category": "system_monitor",
+    "word": "监控"
+  },
+  {
+    "category": "system_monitor",
+    "word": "资源"
+  },
+  {
+    "category": "system_monitor",
+    "word": "性能"
+  },
+  {
+    "category": "system_monitor",
+    "word": "卡不卡"
+  },
+  {
+    "category": "system_monitor",
+    "word": "状态"
+  },
+  {
+    "category": "system_monitor",
+    "word": "OpenEuler"
+  },
+  {
+    "category": "system_monitor",
+    "word": "CPU负载和磁盘剩余空间"
+  },
+  {
+    "category": "system_monitor",
+    "word": "内存和CPU使用率"
+  },
+  {
+    "category": "system_monitor",
+    "word": "进程和网络连接"
+  },
+  {
+    "category": "system_monitor",
+    "word": "磁盘IO和CPU负载"
+  },
+  {
+    "category": "system_monitor",
+    "word": "内存使用和交换分区"
+  },
+  {
+    "category": "system_monitor",
+    "word": "网络流量和CPU占用"
+  },
+  {
+    "category": "system_monitor",
+    "word": "系统健康状态"
+  },
+  {
+    "category": "system_monitor",
+    "word": "资源使用情况"
+  },
+  {
+    "category": "system_monitor",
+    "word": "整体性能"
+  },
+  {
+    "category": "system_monitor",
+    "word": "运行状况"
+  },
+  {
+    "category": "system_monitor",
+    "word": "系统负载"
+  },
+  {
+    "category": "system_monitor",
+    "word": "运行时间"
+  },
+  {
+    "category": "system_monitor",
+    "word": "用户数"
+  },
+  {
+    "category": "system_monitor",
+    "word": "平均负载"
+  },
+  {
+    "category": "system_monitor",
+    "word": "top"
+  },
+  {
+    "category": "system_monitor",
+    "word": "htop"
+  },
+  {
+    "category": "system_monitor",
+    "word": "vmstat"
+  },
+  {
+    "category": "system_monitor",
+    "word": "iostat"
+  },
+  {
+    "category": "system_monitor",
+    "word": "sar"
+  },
+  {
+    "category": "system_monitor",
+    "word": "dstat"
+  },
+  {
+    "category": "system_monitor",
+    "word": "性能监控"
+  },
+  {
+    "category": "system_monitor",
+    "word": "实时监控"
+  },
+  {
+    "category": "system_monitor",
+    "word": "资源监控"
+  },
+  {
+    "category": "system_monitor",
+    "word": "系统监控"
+  },
+  {
+    "category": "system_monitor",
+    "word": "系统卡顿"
+  },
+  {
+    "category": "system_monitor",
+    "word": "响应慢"
+  },
+  {
+    "category": "system_monitor",
+    "word": "速度慢"
+  },
+  {
+    "category": "system_monitor",
+    "word": "延迟高"
+  },
+  {
+    "category": "system_monitor",
+    "word": "资源不足"
+  },
+  {
+    "category": "system_monitor",
+    "word": "内存不足"
+  },
+  {
+    "category": "system_monitor",
+    "word": "磁盘满了"
+  },
+  {
+    "category": "system_monitor",
+    "word": "CPU过高"
+  },
+  {
+    "category": "system_monitor",
+    "word": "性能瓶颈"
+  },
+  {
+    "category": "system_monitor",
+    "word": "系统瓶颈"
+  },
+  {
+    "category": "system_monitor",
+    "word": "资源瓶颈"
+  },
+  {
+    "category": "system_monitor",
+    "word": "系统指标"
+  },
+  {
+    "category": "system_monitor",
+    "word": "性能指标"
+  },
+  {
+    "category": "system_monitor",
+    "word": "关键指标"
+  },
+  {
+    "category": "system_monitor",
+    "word": "监控指标"
+  },
+  {
+    "category": "system_monitor",
+    "word": "CPU内存磁盘"
+  },
+  {
+    "category": "system_monitor",
+    "word": "CPU内存网络"
+  },
+  {
+    "category": "system_monitor",
+    "word": "系统整体资源"
+  },
+  {
+    "category": "system_monitor",
+    "word": "负载情况"
+  },
+  {
+    "category": "system_monitor",
+    "word": "使用情况"
+  },
+  {
+    "category": "system_monitor",
+    "word": "占用情况"
+  },
+  {
+    "category": "system_monitor",
+    "word": "仪表板"
+  },
+  {
+    "category": "system_monitor",
+    "word": "监控面板"
+  },
+  {
+    "category": "system_monitor",
+    "word": "系统概览"
+  },
+  {
+    "category": "system_monitor",
+    "word": "资源概览"
+  },
+  {
+    "category": "system_monitor",
+    "word": "整体视图"
+  },
+  {
+    "category": "system_monitor",
+    "word": "监控视图"
+  },
+  {
+    "category": "system_monitor",
+    "word": "性能视图"
+  },
+  {
+    "category": "system_monitor",
+    "word": "监控告警"
+  },
+  {
+    "category": "system_monitor",
+    "word": "资源告警"
+  },
+  {
+    "category": "system_monitor",
+    "word": "性能告警"
+  },
+  {
+    "category": "system_monitor",
+    "word": "阈值"
+  },
+  {
+    "category": "system_monitor",
+    "word": "告警通知"
+  },
+  {
+    "category": "system_monitor",
+    "word": "监控提醒"
+  },
+  {
+    "category": "system_monitor",
+    "word": "nmon"
+  },
+  {
+    "category": "system_monitor",
+    "word": "glances"
+  },
+  {
+    "category": "system_monitor",
+    "word": "netdata"
+  },
+  {
+    "category": "system_monitor",
+    "word": "prometheus"
+  },
+  {
+    "category": "system_monitor",
+    "word": "grafana"
+  },
+  {
+    "category": "system_monitor",
+    "word": "监控工具"
+  },
+  {
+    "category": "system_monitor",
+    "word": "性能工具"
+  },
+  {
+    "category": "simple_chat",
+    "word": "你好"
+  },
+  {
+    "category": "simple_chat",
+    "word": "hello"
+  },
+  {
+    "category": "simple_chat",
+    "word": "hi"
+  },
+  {
+    "category": "simple_chat",
+    "word": "help"
+  },
+  {
+    "category": "simple_chat",
+    "word": "帮助"
+  }
+]
