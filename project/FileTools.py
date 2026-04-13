@@ -16,6 +16,27 @@ def _bytes_to_human(n):
             return '%.2f %s' % (value, s)
     return "%s B" % n
 
+
+def _resolve_target_path(raw_path: str, base_dir: str) -> tuple[str | None, str | None]:
+    """将用户输入解析为 base_dir 内的安全绝对路径。"""
+    base_path = Path(base_dir).resolve(strict=False)
+    candidate = Path(raw_path)
+
+    if not candidate.is_absolute():
+        candidate = base_path / candidate
+
+    candidate = candidate.resolve(strict=False)
+
+    try:
+        candidate.relative_to(base_path)
+    except ValueError:
+        return None, f"路径非法，禁止访问 {base_path} 以外的区域"
+
+    if not candidate.exists():
+        return None, f"目标不存在: {candidate}"
+
+    return str(candidate), None
+
 def search_files_by_name(directory: str, keyword: str, limit: int = 10) -> dict:
     """
     递归搜索文件名包含 keyword 的文件
@@ -393,15 +414,9 @@ def get_file_usage(user_message: str, base_dir: str) -> dict:
 
     # 3. 安全检查与路径拼接
     if raw_filename:
-        potential_path = raw_filename if os.path.isabs(raw_filename) else os.path.join(base_dir, raw_filename)
-        try:
-            # 简单的安全检查
-            if os.path.exists(potential_path) or os.path.isabs(raw_filename):
-                target_path = potential_path
-            else:
-                return {"状态": "error", "信息": f"路径非法，禁止访问 {base_dir} 以外的区域"}
-        except:
-            return {"状态": "error", "信息": "路径解析错误"}
+        target_file, error = _resolve_target_path(raw_filename, base_dir)
+        if error:
+            return {"状态": "error", "信息": error}
         
     if any(k in user_cmd for k in search_keywords):
         clean_cmd = user_message
@@ -422,7 +437,7 @@ def get_file_usage(user_message: str, base_dir: str) -> dict:
 
     # A. 大文件/概览
     if any(k in user_cmd for k in large_keywords):
-        return get_file_example_info(target_file) # target_file 为 None 也没关系，函数内有默认值
+        return get_file_example_info(target_file or base_dir)
 
     # B. 属性
     if any(k in user_cmd for k in info_keywords) and target_file:
@@ -433,4 +448,4 @@ def get_file_usage(user_message: str, base_dir: str) -> dict:
         return read_file_content(target_file)
 
     # D. 默认列出目录
-    return get_file_example_info(target_file)
+    return get_file_example_info(target_file or base_dir)

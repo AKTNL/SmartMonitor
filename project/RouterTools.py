@@ -1,10 +1,19 @@
 import os
+from pathlib import Path
 import torch
 from transformers import AutoTokenizer, AutoModel
 import json
 import torch.nn.functional as F
-from langchain_core.prompts import ChatPromptTemplate
 from langchain_ollama import ChatOllama
+
+
+PROJECT_ROOT = Path(__file__).resolve(strict=False).parent.parent
+LOCAL_EMBED_MODEL_PATH = PROJECT_ROOT / "models" / "bge-small-zh-v1.5"
+KEYWORD_EMBEDS_PATH = PROJECT_ROOT / "keyword_embeds.pt"
+KEYWORD_INDEX_PATH = PROJECT_ROOT / "keyword_index.json"
+ARBITRATOR_MODEL_NAME = os.environ.get("ARBITRATOR_MODEL_NAME", "MyQwen3-0.6B:latest")
+
+
 def string_match_router(message: str) -> str:
     """
     Performs simple string matching to find a category for the message.
@@ -119,33 +128,45 @@ def string_match_router(message: str) -> str:
 
 class RetrieveRouter:
     def __init__(self, model_name=None):
-        # 1. 优先获取环境变量中的本地路径
-        default_model = os.environ.get("LOCAL_MODEL_PATH", "BAAI/bge-small-zh-v1.5")
-        
-        # 2. 确定最终使用的路径/名称
+        default_model = os.environ.get("LOCAL_MODEL_PATH")
+        if not default_model and LOCAL_EMBED_MODEL_PATH.exists():
+            default_model = str(LOCAL_EMBED_MODEL_PATH)
+        if not default_model:
+            default_model = "BAAI/bge-small-zh-v1.5"
+
         self.model_name = model_name if model_name else default_model
-        
-        # 3. 检查该路径在本地是否存在
         self.is_local = os.path.exists(self.model_name)
-        
-        print(f"DEBUG: RetrieveRouter 正在加载模型: {self.model_name} (本地模式: {self.is_local})")
+        self.available = False
+        self.error = None
 
-        # 4. 初始化模型和分词器，增加 local_files_only 参数
-        # 如果 is_local 为 True，它将强制不联网
-        self.tokenizer = AutoTokenizer.from_pretrained(
-            self.model_name, 
-            local_files_only=self.is_local
-        )
-        self.model = AutoModel.from_pretrained(
-            self.model_name, 
-            local_files_only=self.is_local
-        )
-        self.model.eval()
+        try:
+            if not KEYWORD_EMBEDS_PATH.exists() or not KEYWORD_INDEX_PATH.exists():
+                raise FileNotFoundError("keyword router resources are missing")
 
-        # 加载预计算的嵌入向量和索引
-        self.KEYWORD_EMBEDS = torch.load("keyword_embeds.pt")
-        with open("keyword_index.json", "r", encoding="utf-8") as f:
-            self.KEYWORD_INDEX = json.load(f)
+            print(f"DEBUG: RetrieveRouter 正在加载模型: {self.model_name} (本地模式: {self.is_local})")
+
+            self.tokenizer = AutoTokenizer.from_pretrained(
+                self.model_name,
+                local_files_only=self.is_local
+            )
+            self.model = AutoModel.from_pretrained(
+                self.model_name,
+                local_files_only=self.is_local
+            )
+            self.model.eval()
+
+            self.KEYWORD_EMBEDS = torch.load(KEYWORD_EMBEDS_PATH, map_location="cpu")
+            with open(KEYWORD_INDEX_PATH, "r", encoding="utf-8") as f:
+                self.KEYWORD_INDEX = json.load(f)
+
+            self.available = True
+        except Exception as exc:
+            self.error = str(exc)
+            self.tokenizer = None
+            self.model = None
+            self.KEYWORD_EMBEDS = None
+            self.KEYWORD_INDEX = None
+            print(f"WARNING: RetrieveRouter 已禁用: {self.error}")
 
     def encode(self, text: str):
         inputs = self.tokenizer(text, return_tensors="pt", padding=True, truncation=True)
@@ -156,6 +177,9 @@ class RetrieveRouter:
 
 
     def find_best_keyword(self, sentence: str):
+        if not self.available:
+            return None, None, None
+
         sent_emb = self.encode(sentence)  # (1,dim)
 
         # (1,dim) @ (dim,N) -> (1,N)
@@ -176,7 +200,7 @@ class LLMArbitrator:
 
     ALLOWED = ["cpu", "memory", "disk", "process", "file", "network", "system_monitor"]
 
-    def __init__(self, model_name="MyQwen3-0.6B:latest"):
+    def __init__(self, model_name=ARBITRATOR_MODEL_NAME):
         self.model = ChatOllama(model=model_name)
 
     def arbitrate(self, user_input: str, string_match: list, semantic_match: str) -> str:

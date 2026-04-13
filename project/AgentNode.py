@@ -17,6 +17,18 @@ class AgentNode:
     def __init__(self, model_name: str):
         self.model_name = model_name
         self.llm = ChatOllama(model=model_name)
+        self.retrieve_router = None
+        self.llm_arbitrator = None
+
+    def _get_retrieve_router(self):
+        if self.retrieve_router is None:
+            self.retrieve_router = RetrieveRouter()
+        return self.retrieve_router
+
+    def _get_llm_arbitrator(self):
+        if self.llm_arbitrator is None:
+            self.llm_arbitrator = LLMArbitrator()
+        return self.llm_arbitrator
 
     def start_node(self, state: AgentState):
         """
@@ -25,6 +37,7 @@ class AgentNode:
         # print("\n" + "=" * 20 + " [Node: Start] " + "=" * 20)
 
         # print(f"Current State: {state}")
+        return {}
 
     def system_monitor_node(self, state: AgentState):
         """
@@ -85,7 +98,7 @@ class AgentNode:
         # # 使用统一的格式化函数
         # report_text = self._data_to_text(system_info)
 
-        print("📄 生成上下文报告...")
+        print("正在生成上下文报告...")
         # print(report_text) # 调试用
 
         analysis_prompt = f"""
@@ -108,7 +121,7 @@ class AgentNode:
             {"role": "human", "content": analysis_prompt}
         ]
 
-        print("🤖 调用模型生成回复...")
+        print("正在调用模型生成回复...")
         response = self.llm.invoke(messages)
         #print(f"Current State: {json.dumps(state, indent=4, ensure_ascii=False)}")
         return {"messages": state["messages"] + [{"role": "ai", "content": response.content}]}
@@ -170,27 +183,34 @@ class AgentNode:
         [综合路由]
         决定下一步去哪里。
         """
-        self.retrieve_router = RetrieveRouter()
-        self.llm_arbitrator = LLMArbitrator()
+        retrieve_router = self._get_retrieve_router()
+        llm_arbitrator = self._get_llm_arbitrator()
         current_message = state["messages"][-1]["content"].lower()
         # print(f" 路由分析: {current_message}")
 
         string_match_result = string_match_router(current_message)
         # print(f"字符串匹配结果: {string_match_result}")
 
-        retrieve_category,retrieve_word, retrieve_score = self.retrieve_router.find_best_keyword(current_message)
+        retrieve_category, retrieve_word, retrieve_score = retrieve_router.find_best_keyword(current_message)
 
         # print(f"语义搜索结果: {retrieve_category,retrieve_word} (得分: {retrieve_score:.4f})")
 
         # 如果语义搜索结果在字符串匹配结果中，或语义搜索非常确定而字符串匹配较弱
-        if retrieve_category in string_match_result and retrieve_category is not None:
+        if retrieve_category is not None and retrieve_category in string_match_result:
             # print(f"达成共识: {retrieve_category}")
             return retrieve_category
 
+        if len(string_match_result) == 1:
+            return string_match_result[0]
+
         # print("结果不同或不确定。调用LLMAbitrator。")
         # 将字符串匹配结果列表传递给LLMAbitrator
-        retrieve_result = retrieve_category + retrieve_word + str(retrieve_score)
-        current_message = self.llm_arbitrator.arbitrate(current_message, string_match_result, retrieve_result)
+        if retrieve_category is not None and retrieve_word is not None and retrieve_score is not None:
+            retrieve_result = f"{retrieve_category}, {retrieve_word}, {retrieve_score:.4f}"
+        else:
+            retrieve_result = "unavailable"
+
+        current_message = llm_arbitrator.arbitrate(current_message, string_match_result, retrieve_result)
         # print(f"LLM决定: '{current_message}'")
 
         # print(f"最终去: '{current_message}'")

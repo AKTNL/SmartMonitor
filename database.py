@@ -4,8 +4,24 @@ import json
 import os
 from datetime import datetime
 
-# 数据库文件将存放在当前脚本同级目录下
-DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "eulermind_history.db")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_NAME = "smartmonitor_history.db"
+LEGACY_DB_NAME = "eulermind_history.db"
+
+
+def _resolve_db_path():
+    """优先使用新数据库名，同时兼容旧文件名。"""
+    new_path = os.path.join(BASE_DIR, DB_NAME)
+    legacy_path = os.path.join(BASE_DIR, LEGACY_DB_NAME)
+
+    if os.path.exists(new_path):
+        return new_path
+    if os.path.exists(legacy_path):
+        return legacy_path
+    return new_path
+
+
+DB_PATH = _resolve_db_path()
 
 def get_connection():
     """获取数据库连接，并设置字典形式返回数据"""

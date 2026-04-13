@@ -1,4 +1,4 @@
-# openEulerMind - 基于Qwen1.8b的openEuler大模型辅助助手
+# SmartMonitor - 基于 Qwen 的系统监控助手
 
 ## 系统架构图
 ### 系统整体架构图

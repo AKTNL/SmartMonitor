@@ -1,0 +1,10 @@
+.venv/
+.venv312/
+.pip-target/
+.tmp/
+.tmp312/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/

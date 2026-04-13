@@ -3,24 +3,26 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "eulermind-ai"
+name = "smartmonitor"
 version = "0.1.0"
-requires-python = ">=3.11"
+readme = "README.md"
+requires-python = ">=3.10"
 dependencies = [
 	"langchain",
 	"langchain-community",
+	"langchain-ollama",
 	"langgraph",
 	"psutil",
+	"PyQt6",
 	"python-dotenv",
 	"transformers",
-	"torch",
-	"langchain_ollama"
+	"torch"
 ]
 
 #[关键步骤]配置CLI命令映射
 #格式：命令名 = “包名.模块名：函数名“
 [project.scripts]
-eulermind-ai = "project.Agent:main"
+smartmonitor = "project.Agent:main"
 
 [tool.setuptools]
 packages = ["project"]

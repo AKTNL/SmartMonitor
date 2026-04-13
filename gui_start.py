@@ -1,5 +1,6 @@
 import sys
 import os
+import site
 
 # 1. 获取当前脚本的绝对路径
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -11,12 +12,52 @@ if current_dir not in sys.path:
 local_model_path = os.path.join(current_dir, "models", "bge-small-zh-v1.5")
 if os.path.exists(local_model_path):
     # 告诉环境变量或者你的 AgentGraph 优先读这里
-    os.environ["LOCAL_MODEL_PATH"] = local_model_path
-    print(f"✅ 已定位离线模型: {local_model_path}")
+    os.environ.setdefault("LOCAL_MODEL_PATH", local_model_path)
+    print(f"[INFO] 已定位离线模型: {local_model_path}")
 else:
     # 如果没找到离线版，再尝试走镜像站在线下
-    os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"
-    print("ℹ️ 未发现离线模型，将尝试在线连接镜像站")
+    os.environ.setdefault("HF_ENDPOINT", "https://hf-mirror.com")
+    print("[INFO] 未发现离线模型，将尝试在线连接镜像站")
+
+CHAT_MODEL_NAME = os.environ.get("SMARTMONITOR_MODEL_NAME", "qwen3:0.6b")
+
+
+def _configure_windows_qt_runtime():
+    """在 Windows 上为 Qt 补充 DLL 搜索路径。"""
+    if os.name != "nt" or not hasattr(os, "add_dll_directory"):
+        return []
+
+    handles = []
+    system_root = os.environ.get("SystemRoot", r"C:\Windows")
+    system32_dir = os.path.join(system_root, "System32")
+    if os.path.isdir(system32_dir):
+        handles.append(os.add_dll_directory(system32_dir))
+
+    site_roots = []
+    for getter in (site.getsitepackages, site.getusersitepackages):
+        try:
+            value = getter()
+        except Exception:
+            continue
+
+        if isinstance(value, str):
+            site_roots.append(value)
+        else:
+            site_roots.extend(value)
+
+    qt_candidates = []
+    for root in site_roots:
+        candidate = os.path.join(root, "PyQt6", "Qt6", "bin")
+        if os.path.isdir(candidate) and candidate not in qt_candidates:
+            qt_candidates.append(candidate)
+
+    for candidate in qt_candidates:
+        handles.append(os.add_dll_directory(candidate))
+
+    return handles
+
+
+_QT_DLL_DIR_HANDLES = _configure_windows_qt_runtime()
 
 # 1. 设置环境变量 (必须在导入 transformers/langchain 之前设置)
 # os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"
@@ -31,7 +72,7 @@ import database
 try:
     from project.AgentGraph import AgentGraph
 except ImportError as e:
-    print("❌ 导入错误: 找不到 project 模块。")
+    print("[ERROR] 导入错误: 找不到 project 模块。")
     print("请确保你在项目的'根目录'下运行此脚本 (能看到 pyproject.toml 的那个目录)")
     print(f"详细报错: {e}")
     sys.exit(1)
@@ -53,15 +94,15 @@ class AIWorker(QThread):
     def run(self):
         # --- 1. 初始化阶段 (只在第一次运行时执行) ---
         if AIWorker.agent_instance is None:
-            self.status_signal.emit("🔄 正在初始化 Agent (模型: qwen3:0.6b)...")
+            self.status_signal.emit(f"🔄 正在初始化 Agent (模型: {CHAT_MODEL_NAME})...")
             try:
                 # 对应 Agent.py 里的初始化逻辑
-                model_name = "qwen3:0.6b"
+                model_name = CHAT_MODEL_NAME
                 graph = AgentGraph(model_name)
                 AIWorker.agent_instance = graph.get_graph()
                 self.status_signal.emit("✅ 初始化完成！")
             except Exception as e:
-                self.response_signal.emit(f"❌ 初始化失败: {str(e)}")
+                self.response_signal.emit(f"❌ 初始化失败: {str(e)}", None)
                 return
         
         # --- 2. 推理阶段 ---
