@@ -1,6 +1,7 @@
 import sys
 import os
 import site
+import platform
 
 # 1. 获取当前脚本的绝对路径
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -178,7 +179,13 @@ class ModernChatBubble(QFrame):
         self.bubble.setWordWrap(True)
         self.bubble.setMaximumWidth(600) 
         self.bubble.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
-        self.bubble.setFont(QFont("Microsoft YaHei UI", 10))
+        if platform.system() == "Windows":
+            font_family = "Microsoft YaHei UI"
+        elif platform.system() == "Darwin":
+            font_family = "PingFang SC"
+        else:
+            font_family = "Sans Serif"
+        self.bubble.setFont(QFont(font_family, 10))
 
         style = "padding: 12px 18px; border-radius: 15px;"
         if is_user:
